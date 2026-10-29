@@ -1,0 +1,34 @@
+flowchart LR
+    subgraph Agentes["Agentes de medição (clientes TCP)"]
+        A1["agente-01"]
+        A2["agente-02"]
+    end
+    subgraph Alvos["Serviços-alvo medidos"]
+        G["gaia.cs.umass.edu:80 (HTTP)"]
+        U["aprender.unb.br:443 (só TCP)"]
+        L["alvo local :9000"]
+    end
+    subgraph Servidor["Servidor NetMon"]
+        T["Canal TCP :5050<br/>um socket e uma thread por agente"]
+        R["Regras de alerta"]
+        H["Servidor HTTP :8765<br/>API + arquivos do painel"]
+        DB[("SQLite: medições, alertas,<br/>regras, usuários")]
+        LG[["logs/servidor.log"]]
+        T --> R
+        R --> DB
+        T --> DB
+        H --> DB
+        T -.-> LG
+        H -.-> LG
+    end
+    subgraph Paineis["Painéis web (navegadores)"]
+        P1["painel1"]
+        P2["painel2"]
+        P1 ~~~ P2
+    end
+    A1 -- "medição:<br/>connect() + GET" --> G
+    A1 --> U
+    A1 --> L
+    A1 -- "protocolo NetMon<br/>HELLO / MEDICAO / BYE" --> T
+    A2 --> T
+    H --- |"HTTP/1.1 persistente:<br/>cada painel consulta a cada 2 s"| Paineis

@@ -1,0 +1,42 @@
+/* NetMon: estilo do painel */
+body {
+  margin: 0;
+  background: #f4f5f2;
+  color: #1d2321;
+  font: 14px/1.45 -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+[hidden] { display: none !important; }
+h1 { margin: 0; font-size: 26px; }
+h2 { margin: 0 0 12px; font-size: 15px; }
+h2 small, .sub { color: #66706b; font-weight: normal; }
+.erro { color: #c0392b; }
+
+.cartao { background: #fff; border: 1px solid #dde1dc; border-radius: 10px; padding: 16px; }
+.login { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+.login form { width: 320px; display: flex; flex-direction: column; gap: 10px; }
+label { display: flex; flex-direction: column; gap: 4px; color: #66706b; }
+input, select, button { font: inherit; padding: 6px 10px; border: 1px solid #dde1dc; border-radius: 6px; }
+button { background: #1f6f5c; color: #fff; border-color: #1f6f5c; cursor: pointer; }
+button.sec { background: #fff; color: #1d2321; border-color: #dde1dc; }
+
+main { max-width: 1200px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+.topo { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; }
+.duas-colunas { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 800px) { .duas-colunas { grid-template-columns: 1fr; } }
+
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 5px 6px; border-bottom: 1px solid #dde1dc; }
+th { color: #66706b; font-weight: normal; }
+td input { width: 80px; }
+.rolagem { max-height: 300px; overflow: auto; margin-top: 10px; }
+
+.selo { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 12px; font-weight: bold; color: #fff; background: #b7791f; }
+.selo.up { background: #2f855a; }
+.selo.down { background: #c0392b; }
+.selo.cinza { background: #9aa5a0; }
+
+ul { list-style: none; margin: 0; padding: 0; max-height: 260px; overflow: auto; }
+#lista-alertas li { border-left: 3px solid #b7791f; padding: 4px 8px; margin-bottom: 6px; }
+#lista-alertas li.critico { border-color: #c0392b; }
+#lista-alertas small { color: #66706b; }
+#lista-agentes li { padding: 3px 0; }

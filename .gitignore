@@ -1,0 +1,8 @@
+__pycache__/
+dados/
+logs/
+.DS_Store
+.venv/
+
+# slides de terceiros (Kurose & Ross): não publicar no repositório
+referencias/slides/

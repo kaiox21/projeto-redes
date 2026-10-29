@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NetMon — Painel</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Tela de login -->
+  <section id="tela-login" class="login">
+    <form id="form-login" class="cartao">
+      <h1>NetMon</h1>
+      <p class="sub">Monitoramento de serviços de rede</p>
+      <label>Usuário <input name="usuario" value="painel1" required></label>
+      <label>Senha <input name="senha" type="password" value="redes2026" required></label>
+      <button type="submit">Entrar</button>
+      <p id="erro-login" class="erro" hidden></p>
+    </form>
+  </section>
+
+  <!-- Painel -->
+  <main id="tela-painel" hidden>
+    <header class="topo">
+      <div><b>NetMon</b> <span id="usuario-atual" class="sub"></span></div>
+      <div>
+        <span id="status-servidor" class="selo">conectando…</span>
+        consulta a cada 2 s · última levou <b id="tempo-resposta">—</b>
+        <button id="btn-sair" class="sec">Sair</button>
+      </div>
+    </header>
+
+    <section class="cartao">
+      <h2>Serviços monitorados <small>(última medição de cada alvo)</small></h2>
+      <table>
+        <thead><tr><th>Alvo</th><th>Estado</th><th>Conexão TCP</th><th>Resposta HTTP</th><th>Agente</th><th>Horário</th></tr></thead>
+        <tbody id="tabela-alvos"><tr><td colspan="6">nenhuma medição ainda</td></tr></tbody>
+      </table>
+    </section>
+
+    <section class="duas-colunas">
+      <div class="cartao">
+        <h2>Alertas</h2>
+        <ul id="lista-alertas"></ul>
+      </div>
+      <div class="cartao">
+        <h2>Agentes</h2>
+        <ul id="lista-agentes"></ul>
+      </div>
+    </section>
+
+    <section class="duas-colunas">
+      <div class="cartao">
+        <h2>Regras de alerta <small>(PUT /api/regras/&lt;id&gt;)</small></h2>
+        <table>
+          <thead><tr><th>#</th><th>Regra</th><th>Limiar (ms)</th><th>Seguidas</th><th>Nível</th><th></th></tr></thead>
+          <tbody id="tabela-regras"></tbody>
+        </table>
+      </div>
+      <div class="cartao">
+        <h2>Histórico <small>(GET /api/medicoes)</small></h2>
+        <form id="form-historico">
+          <select name="alvo"><option value="">todos os alvos</option></select>
+          <button type="submit">Consultar</button>
+        </form>
+        <div class="rolagem">
+          <table>
+            <thead><tr><th>Horário</th><th>Alvo</th><th>Estado</th><th>TCP</th><th>HTTP</th><th>Agente</th></tr></thead>
+            <tbody id="tabela-historico"></tbody>
+          </table>
+        </div>
+        <p id="info-historico" class="sub"></p>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
