@@ -19,7 +19,7 @@ O servidor guarda o histórico, gera alertas (serviço fora do ar, serviço lent
 
 ## Como executar
 
-Abra um terminal na pasta `projeto1` para cada programa.
+Abra um terminal na pasta do projeto (a raiz deste repositório, onde está este README) para cada programa.
 
 **1. Servidor NetMon**
 ```bash

@@ -5,7 +5,7 @@ Tempo estimado: 1 h sem o Experimento E e o Wireshark; 2 h com tudo.
 
 Em todos os terminais, comece por:
 ```bash
-cd ~/Faculdade/2026-2/"CIC0124 - Redes de Computadores"/Trabalhos/projeto1
+cd caminho/para/projeto-redes      # a pasta onde você clonou ou descompactou o repositório
 ```
 
 ## 0. Começar do zero
