@@ -90,7 +90,8 @@ def grafico_c():
         return
     condicoes = sorted(set(l["condicao"] for l in linhas))
     figura, (esq, dir) = plt.subplots(1, 2, figsize=(7, 3.2))
-    for c in condicoes:
+    for n, c in enumerate(condicoes):
+        cor = "C%d" % n    # mesma cor para a condição nos dois painéis
         ks = sorted(set(int(l["clientes"]) for l in linhas if l["condicao"] == c))
         medias, p95s, taxas = [], [], []
         for k in ks:
@@ -100,9 +101,9 @@ def grafico_c():
             p95s.append(atrasos[int(0.95 * len(atrasos)) - 1])
             # cada execução grava a sua taxa; tira a média entre execuções
             taxas.append(statistics.mean(set(float(l["taxa_total_msg_s"]) for l in grupo)))
-        esq.plot(ks, medias, marker="o", label="%s (média)" % c)
-        esq.plot(ks, p95s, marker="s", linestyle="--", label="%s (p95)" % c)
-        dir.plot(ks, taxas, marker="o", label=c)
+        esq.plot(ks, medias, marker="o", color=cor, label="%s (média)" % c)
+        esq.plot(ks, p95s, marker="s", linestyle="--", color=cor, label="%s (p95)" % c)
+        dir.plot(ks, taxas, marker="o", color=cor, label=c)
     esq.set_xlabel("agentes simultâneos")
     esq.set_ylabel("atraso por mensagem (ms)")
     dir.set_xlabel("agentes simultâneos")
@@ -112,6 +113,7 @@ def grafico_c():
         eixo.set_ylim(bottom=0)
         eixo.grid(alpha=0.3)
     esq.legend(fontsize=7)
+    dir.legend(fontsize=7)
     figura.suptitle("Experimento C: concorrência (p95 = 95% das mensagens tiveram atraso até esse valor)", fontsize=9)
     salvar("exp_c_concorrencia.png")
 
@@ -135,8 +137,9 @@ def grafico_d():
     esq.boxplot([grupos[n] if grupos[n] else [0] for n in nomes])
     esq.set_xticks(range(1, len(nomes) + 1))
     esq.set_xticklabels(nomes, fontsize=7)
-    esq.set_ylabel("RTT das mensagens entregues (ms)")
-    esq.set_ylim(bottom=0)
+    esq.set_ylabel("RTT das mensagens entregues\n(ms, escala logarítmica)")
+    esq.set_yscale("log")   # local (~0,1 ms) e lan (~10 ms) no mesmo eixo
+    esq.yaxis.set_major_formatter(FuncFormatter(lambda v, _: "%g" % v))
     dir.bar(range(len(nomes)), [100.0 * perdas[n][0] / perdas[n][1] for n in nomes])
     dir.set_xticks(range(len(nomes)))
     dir.set_xticklabels(nomes, fontsize=7)
