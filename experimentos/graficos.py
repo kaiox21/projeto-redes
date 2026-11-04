@@ -24,6 +24,16 @@ RESULTADOS = Path(__file__).resolve().parent.parent / "resultados"
 GRAFICOS = RESULTADOS / "graficos"
 
 
+# ordem das condições nos gráficos e nomes curtos para os rótulos
+ORDEM = ["local", "lan", "atraso50ms", "perda2", "internet"]
+NOME_COND = {"atraso50ms": "+50 ms", "perda2": "perda 2%"}
+NOME_TIPO = {"ping_app": "ping", "resposta_http": "HTTP", "connect_tcp": "connect"}
+
+
+def posicao(cond):
+    return ORDEM.index(cond) if cond in ORDEM else len(ORDEM)
+
+
 def ler(nome):
     arquivo = RESULTADOS / nome
     if not arquivo.exists():
@@ -44,21 +54,21 @@ def grafico_a():
     linhas = ler("exp_a_rtt.csv")
     if not linhas:
         return
-    grupos = {}
+    grupos, chaves = {}, {}
     for l in linhas:
-        rotulo = "%s\n%s" % (l["tipo"], l["condicao"])
-        if l["condicao"] == "internet":
-            # gaia e aprender têm RTTs muito diferentes: uma caixa para cada destino
-            rotulo = "%s\n%s" % (l["tipo"], l["destino"].split(".")[0])
+        cond = l["condicao"]
+        lugar = l["destino"].split(".")[0] if cond == "internet" else NOME_COND.get(cond, cond)
+        rotulo = "%s\n%s" % (NOME_TIPO.get(l["tipo"], l["tipo"]), lugar)
         grupos.setdefault(rotulo, []).append(float(l["rtt_ms"]))
-    nomes = sorted(grupos)
-    plt.figure(figsize=(6, 3.5))
+        chaves[rotulo] = (posicao(cond), l["tipo"], lugar)
+    nomes = sorted(grupos, key=lambda n: chaves[n])
+    plt.figure(figsize=(7, 3.5))
     plt.boxplot([grupos[n] for n in nomes])
     plt.xticks(range(1, len(nomes) + 1), nomes, fontsize=8)
     plt.ylabel("RTT (ms, escala logarítmica)")
     plt.yscale("log")
     plt.gca().yaxis.set_major_formatter(FuncFormatter(lambda v, _: "%g" % v))   # mostra 0.1, 1, 10 em vez de 10^-1
-    plt.title("Experimento A: RTT por condição (%s medições por grupo)" % min(len(v) for v in grupos.values()), fontsize=10)
+    plt.title("Experimento A: RTT por condição (pelo menos %s medições por grupo)" % min(len(v) for v in grupos.values()), fontsize=10)
     plt.grid(axis="y", alpha=0.3)
     salvar("exp_a_rtt.png")
 
@@ -122,9 +132,10 @@ def grafico_d():
     linhas = ler("exp_d_tcp_udp.csv")
     if not linhas:
         return
-    grupos, perdas = {}, {}
+    grupos, perdas, ordem_d = {}, {}, {}
     for l in linhas:
-        chave = "%s\n%s" % (l["protocolo"], l["condicao"])
+        chave = "%s\n%s" % (l["protocolo"], NOME_COND.get(l["condicao"], l["condicao"]))
+        ordem_d[chave] = (l["protocolo"], posicao(l["condicao"]))
         grupos.setdefault(chave, [])
         perdas.setdefault(chave, [0, 0])
         perdas[chave][1] += 1
@@ -132,22 +143,22 @@ def grafico_d():
             grupos[chave].append(float(l["rtt_ms"]))
         else:
             perdas[chave][0] += 1
-    nomes = sorted(grupos)
-    figura, (esq, dir) = plt.subplots(1, 2, figsize=(7, 3.2))
+    nomes = sorted(grupos, key=lambda n: ordem_d[n])
+    figura, (esq, dir) = plt.subplots(1, 2, figsize=(8, 3.4))
     esq.boxplot([grupos[n] if grupos[n] else [0] for n in nomes])
     esq.set_xticks(range(1, len(nomes) + 1))
-    esq.set_xticklabels(nomes, fontsize=7)
+    esq.set_xticklabels(nomes, fontsize=6)
     esq.set_ylabel("RTT das mensagens entregues\n(ms, escala logarítmica)")
     esq.set_yscale("log")   # local (~0,1 ms) e lan (~10 ms) no mesmo eixo
     esq.yaxis.set_major_formatter(FuncFormatter(lambda v, _: "%g" % v))
     dir.bar(range(len(nomes)), [100.0 * perdas[n][0] / perdas[n][1] for n in nomes])
     dir.set_xticks(range(len(nomes)))
-    dir.set_xticklabels(nomes, fontsize=7)
+    dir.set_xticklabels(nomes, fontsize=6)
     dir.set_ylabel("mensagens perdidas (%)")
     dir.set_ylim(0, max(5, max(100.0 * perdas[n][0] / perdas[n][1] for n in nomes) * 1.2))
     for i, n in enumerate(nomes):   # escreve o valor em cima da barra, mesmo quando é 0
-        dir.text(i, 100.0 * perdas[n][0] / perdas[n][1], "%d de %d" % (perdas[n][0], perdas[n][1]),
-                 ha="center", va="bottom", fontsize=7)
+        dir.text(i, 100.0 * perdas[n][0] / perdas[n][1], "%d/%d" % (perdas[n][0], perdas[n][1]),
+                 ha="center", va="bottom", fontsize=6)
     for eixo in (esq, dir):
         eixo.grid(axis="y", alpha=0.3)
     figura.suptitle("Experimento D: TCP x UDP com a mesma carga", fontsize=10)
