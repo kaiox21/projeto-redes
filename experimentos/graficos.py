@@ -16,7 +16,7 @@ try:
     import matplotlib
     matplotlib.use("Agg")    # gera arquivos sem abrir janela
     import matplotlib.pyplot as plt
-    from matplotlib.ticker import ScalarFormatter
+    from matplotlib.ticker import FuncFormatter
 except ImportError:
     raise SystemExit("Instale o matplotlib primeiro: pip3 install matplotlib")
 
@@ -46,14 +46,18 @@ def grafico_a():
         return
     grupos = {}
     for l in linhas:
-        grupos.setdefault("%s\n%s" % (l["tipo"], l["condicao"]), []).append(float(l["rtt_ms"]))
+        rotulo = "%s\n%s" % (l["tipo"], l["condicao"])
+        if l["condicao"] == "internet":
+            # gaia e aprender têm RTTs muito diferentes: uma caixa para cada destino
+            rotulo = "%s\n%s" % (l["tipo"], l["destino"].split(".")[0])
+        grupos.setdefault(rotulo, []).append(float(l["rtt_ms"]))
     nomes = sorted(grupos)
     plt.figure(figsize=(6, 3.5))
     plt.boxplot([grupos[n] for n in nomes])
     plt.xticks(range(1, len(nomes) + 1), nomes, fontsize=8)
     plt.ylabel("RTT (ms, escala logarítmica)")
     plt.yscale("log")
-    plt.gca().yaxis.set_major_formatter(ScalarFormatter())   # mostra 0.1, 1, 10 em vez de 10^-1
+    plt.gca().yaxis.set_major_formatter(FuncFormatter(lambda v, _: "%g" % v))   # mostra 0.1, 1, 10 em vez de 10^-1
     plt.title("Experimento A: RTT por condição (%s medições por grupo)" % min(len(v) for v in grupos.values()), fontsize=10)
     plt.grid(axis="y", alpha=0.3)
     salvar("exp_a_rtt.png")
@@ -138,6 +142,9 @@ def grafico_d():
     dir.set_xticklabels(nomes, fontsize=7)
     dir.set_ylabel("mensagens perdidas (%)")
     dir.set_ylim(0, max(5, max(100.0 * perdas[n][0] / perdas[n][1] for n in nomes) * 1.2))
+    for i, n in enumerate(nomes):   # escreve o valor em cima da barra, mesmo quando é 0
+        dir.text(i, 100.0 * perdas[n][0] / perdas[n][1], "%d de %d" % (perdas[n][0], perdas[n][1]),
+                 ha="center", va="bottom", fontsize=7)
     for eixo in (esq, dir):
         eixo.grid(axis="y", alpha=0.3)
     figura.suptitle("Experimento D: TCP x UDP com a mesma carga", fontsize=10)
