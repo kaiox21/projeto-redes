@@ -135,18 +135,36 @@ referencias/             slides da disciplina e mapa requisito → slide (slides
 
 ## Bibliotecas, ferramentas e uso de IA
 
-O código usa apenas a biblioteca padrão do Python
-(socket, threading, sqlite3, http.server e
-json); a biblioteca matplotlib foi usada somente para gerar
-os gráficos. Foram usados o Wireshark [7], o netcat (testes
-manuais do protocolo) e o dnctl/pfctl do macOS, que
-usam o dummynet [6]; no celular, os scripts rodaram no
-terminal a-Shell. O assistente de IA Claude (Anthropic) foi
-usado como apoio ao longo do projeto: na revisão, e procura
-de possíveis problemas no código (servidor, agente, painel,
-teste e scripts dos experimentos), na geração dos gráficos,
-na síntese do roteiro usado para gravação e na edição do
-vídeo. O grupo escolheu o tema, revisou e aprovou as decisões
-de projeto, executou todos os experimentos e as capturas no
-Wireshark, gravou a demonstração e revisou, testou e validou
-todo o material entregue.
+- Bibliotecas: o código usa apenas a biblioteca padrão do Python (`socket`, `threading`, `sqlite3`,
+  `http.server` e `json`); a biblioteca matplotlib foi usada somente para gerar os gráficos.
+- Ferramentas: foram usados o Wireshark [7], o netcat (testes manuais do protocolo) e o dnctl/pfctl
+  do macOS, que usam o dummynet [6]; no celular, os scripts rodaram no terminal a-Shell.
+- Uso de IA: o assistente de IA Claude (Anthropic) foi usado como apoio ao longo do projeto: na
+  revisão, e procura de possíveis problemas no código (servidor, agente, painel, teste e scripts dos
+  experimentos), na geração dos gráficos, na síntese do roteiro usado para gravação e na edição do
+  vídeo. O grupo escolheu o tema, revisou e aprovou as decisões de projeto, executou todos os
+  experimentos e as capturas no Wireshark, gravou a demonstração e revisou, testou e validou todo o
+  material entregue.
+
+## Referências
+
+A numeração é a mesma do relatório.
+
+1. J. F. Kurose e K. W. Ross. *Redes de Computadores e a Internet: Uma Abordagem Top-Down*, 8ª ed.
+   São Paulo: Pearson, 2021.
+2. R. Fielding, M. Nottingham e J. Reschke. "HTTP Semantics", RFC 9110, IETF, jun. 2022.
+   <https://www.rfc-editor.org/rfc/rfc9110>
+3. W. Eddy. "Transmission Control Protocol (TCP)", RFC 9293, IETF, ago. 2022.
+   <https://www.rfc-editor.org/rfc/rfc9293>
+4. J. Postel. "User Datagram Protocol", RFC 768, IETF, ago. 1980.
+   <https://www.rfc-editor.org/rfc/rfc768>
+5. Python Software Foundation. "socket — Low-level networking interface", documentação do Python 3,
+   acesso em nov. 2026. <https://docs.python.org/3/library/socket.html>
+6. L. Rizzo. "Dummynet: A simple approach to the evaluation of network protocols", *ACM SIGCOMM
+   Computer Communication Review*, v. 27, n. 1, p. 31–41, 1997.
+7. Wireshark Foundation. "Wireshark User's Guide", documentação on-line, acesso em nov. 2026.
+   <https://www.wireshark.org/docs/wsug_html_chunked/>
+8. V. Paxson, M. Allman, J. Chu e M. Sargent. "Computing TCP's Retransmission Timer", RFC 6298, IETF,
+   jun. 2011. <https://www.rfc-editor.org/rfc/rfc6298>
+9. The Linux Foundation. "tc-netem(8): Network emulator", página de manual do Linux, acesso em
+   nov. 2026. <https://man7.org/linux/man-pages/man8/tc-netem.8.html>
