@@ -14,7 +14,8 @@ O servidor guarda o histórico, gera alertas (serviço fora do ar, serviço lent
 ## Requisitos
 
 - Python **3.7 ou mais novo** (`python3 --version`). Não precisa instalar nada: o projeto usa só a
-  biblioteca padrão (`socket`, `threading`, `sqlite3`, `http.server`, `json`).
+  biblioteca padrão (`socket`, `threading`, `sqlite3`, `http.server`, `json`). O matplotlib só
+  é necessário para gerar os gráficos dos experimentos.
 - Um navegador.
 
 ## Como executar
@@ -128,6 +129,7 @@ resultados/              CSVs e gráficos gerados pelos experimentos
 docs/PROTOCOLO.md        especificação do protocolo de aplicação
 docs/EXPERIMENTOS.md     roteiro dos experimentos A a E
 docs/WIRESHARK.md        guia das capturas
+docs/capturas/           prints das capturas do Wireshark usadas no relatório
 docs/ROTEIRO-TESTES.md   roteiro para testar tudo do zero
 docs/arquitetura.png     diagrama de arquitetura (fonte: docs/arquitetura.mmd)
 referencias/             slides da disciplina e mapa requisito → slide (slides fora do repositório)
@@ -140,7 +142,7 @@ referencias/             slides da disciplina e mapa requisito → slide (slides
 - Ferramentas: foram usados o Wireshark [7], o netcat (testes manuais do protocolo) e o dnctl/pfctl
   do macOS, que usam o dummynet [6]; no celular, os scripts rodaram no terminal a-Shell.
 - Uso de IA: o assistente de IA Claude (Anthropic) foi usado como apoio ao longo do projeto: na
-  revisão, e procura de possíveis problemas no código (servidor, agente, painel, teste e scripts dos
+  revisão e na procura de possíveis problemas no código (servidor, agente, painel, teste e scripts dos
   experimentos), na geração dos gráficos, na síntese do roteiro usado para gravação e na edição do
   vídeo. O grupo escolheu o tema, revisou e aprovou as decisões de projeto, executou todos os
   experimentos e as capturas no Wireshark, gravou a demonstração e revisou, testou e validou todo o
