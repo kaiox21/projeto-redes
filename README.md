@@ -136,9 +136,12 @@ referencias/             slides da disciplina e mapa requisito → slide (slides
 ## Bibliotecas, ferramentas e uso de IA
 
 - Bibliotecas: apenas a biblioteca padrão do Python; matplotlib só para gerar os gráficos.
-- Ferramentas: Wireshark (análise de tráfego), netcat (testes manuais), tc/netem ou dnctl/pfctl
-  (atraso e perda simulados), Mermaid (diagrama de arquitetura).
-- Uso de IA: o assistente Claude (Anthropic) foi usado para gerar e revisar o código do servidor, do
-  agente, do painel, do teste e dos scripts dos experimentos, e para redigir a primeira versão desta
-  documentação. O grupo revisou, testou e executou todo o material, e os resultados dos experimentos
-  foram medidos pelo grupo.
+- Ferramentas: Wireshark (análise de tráfego), netcat (testes manuais do protocolo), dnctl/pfctl do
+  macOS (atraso e perda simulados no Experimento E), a-Shell (terminal no iPhone, para a condição lan),
+  Mermaid (diagrama de arquitetura).
+- Uso de IA: o assistente Claude (Anthropic) foi usado como apoio ao longo do projeto: na geração e
+  revisão do código (servidor, agente, painel, teste e scripts dos experimentos), na redação de uma
+  primeira versão desta documentação e de partes do relatório, na geração dos gráficos, na síntese do
+  roteiro e na edição do vídeo. O grupo escolheu o tema, revisou e aprovou as decisões de projeto,
+  executou todos os experimentos e as capturas no Wireshark, gravou a demonstração e revisou, testou e
+  validou todo o material entregue.
